@@ -2,17 +2,17 @@ const Header = (props) => {
   return (<h1>{props.courseName}</h1>);
 };
 
-const Content = () => {
-
+const Content = (props) => {
+  return (
+    <div>
+      { props.partsName.map((part, index) => <p key={index}>{part} {props.nbOfEx[index]}</p>) }
+    </div>
+  );
 };
 
 const Total = (props) => {
-  const tot = props.numbers.reduce((a, b) => a + b);
-  return (
-    <p>
-      Number of exercices {tot}
-    </p>
-  );
+  const tot = props.nbOfEx.reduce((a, b) => a + b);
+  return (<p>Number of exercices {tot}</p>);
 };
 
 const App = () => {
@@ -22,21 +22,13 @@ const App = () => {
     'Using props to pass data',
     'State of a component'
   ];
-  const exercisesPerPart = [10, 7, 14];
+  const nbOfEx = [10, 7, 14];
 
   return (
     <div>
       <Header courseName={course} />
-      <p>
-        {partsName[0]} {exercisesPerPart[0]}
-      </p>
-      <p>
-        {partsName[1]} {exercisesPerPart[1]}
-      </p>
-      <p>
-        {partsName[2]} {exercisesPerPart[2]}
-      </p>
-      <Total numbers={exercisesPerPart} />
+      <Content partsName={partsName} nbOfEx={nbOfEx} />
+      <Total nbOfEx={nbOfEx} />
     </div>
   )
 };
