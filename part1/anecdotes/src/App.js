@@ -1,5 +1,16 @@
 import { useState } from 'react'
 
+const Header = ({ text }) => <h1>{text}</h1>;
+const Button = ({ text, handleClick }) => <button onClick={handleClick}>{text}</button>;
+const Anecdote = ({ text, votes }) => {
+  return (
+    <p>
+      {text}<br />
+      has {votes} {votes > 1 ? "votes" : "vote"}.
+    </p>
+  );
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -10,20 +21,31 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
-  ]
+  ];
 
   const randIndex = () => Math.floor(Math.random() * anecdotes.length);
-  
+
   const [selected, setSelected] = useState(randIndex());
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+  const maxVotesIndex = votes.indexOf(Math.max(...votes));
 
   const nextClick = () => setSelected(randIndex());
+  const voteClick = () => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    setVotes(newVotes);
+  };
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <button onClick={nextClick}>next anecdote</button>
+      <Header text="Anecdote of the day" />
+      <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
+      <Button text="Vote" handleClick={voteClick} />
+      <Button text="Next anecdote" handleClick={nextClick} />
+      <Header text="Anecdote with most votes" />
+      <Anecdote text={anecdotes[maxVotesIndex]} votes={votes[maxVotesIndex]} />
     </div>
-  )
+  );
 }
 
 export default App
