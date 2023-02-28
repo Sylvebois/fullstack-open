@@ -7,7 +7,7 @@ const Persons = ({persons}) =>
             </tr>
         </thead>
         <tbody>
-            {persons.map(person => <Line key={person.id} name={person.name} phone={person.phone} />)}
+            {persons.map(person => <Line key={person.id} name={person.name} phone={person.number} />)}
         </tbody>
     </table>
 

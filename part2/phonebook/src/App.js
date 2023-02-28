@@ -1,24 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import axios from 'axios';
+
 import Filter from './components/Filter';
 import Persons from './components/Persons';
 import PersonForm from './components/PersonForm';
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', phone: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 4 }
-  ]);
+  const [persons, setPersons] = useState([]);
   const [filterName, setFilterName] = useState('');
   const [newName, setNewName] = useState('');
   const [newPhone, setNewPhone] = useState('');
+
+  const fetchPersons = () => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => setPersons(response.data))
+  };
 
   const handleAdd = e => {
     e.preventDefault();
 
     if (newName.length > 0 && newPhone.length > 0) {
-      const checkResult = persons.find(person => person.name === newName || person.phone === newPhone);
+      const checkResult = persons.find(person => person.name === newName || person.nuber === newPhone);
 
       if (checkResult) {
         alert(`${checkResult.name === newName ? newName : newPhone} is already added to phonebook`)
@@ -26,7 +30,7 @@ const App = () => {
       else {
         const person = {
           name: newName,
-          phone: newPhone,
+          number: newPhone,
           id: persons.length + 1
         };
 
@@ -40,6 +44,8 @@ const App = () => {
   const handleFilterChange = e => setFilterName(e.target.value.toLowerCase());
   const handleNameChange = e => setNewName(e.target.value);
   const handlePhoneChange = e => setNewPhone(e.target.value);
+
+  useEffect(fetchPersons, []);
 
   return (
     <>
