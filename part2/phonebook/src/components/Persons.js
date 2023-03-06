@@ -1,4 +1,4 @@
-const Persons = ({persons}) =>
+const Persons = ({ persons, handleDel }) =>
     <table>
         <thead>
             <tr>
@@ -7,10 +7,26 @@ const Persons = ({persons}) =>
             </tr>
         </thead>
         <tbody>
-            {persons.map(person => <Line key={person.id} name={person.name} phone={person.number} />)}
+            {
+                persons.map(person =>
+                    <Line
+                        key={person.id}
+                        id={person.id}
+                        name={person.name}
+                        phone={person.number}
+                        handleDel={handleDel}
+                    />)
+            }
         </tbody>
     </table>
 
-const Line = ({ name, phone }) => <tr><td>{name}</td><td>{phone}</td></tr>
+const Line = ({ id, name, phone, handleDel }) =>
+    <tr>
+        <td>{name}</td>
+        <td>{phone}</td>
+        <td>
+            <button onClick={() => handleDel(id, name)}>delete</button>
+        </td>
+    </tr>
 
 export default Persons;
